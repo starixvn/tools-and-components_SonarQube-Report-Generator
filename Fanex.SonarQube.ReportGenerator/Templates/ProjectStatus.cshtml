@@ -1,0 +1,17 @@
+﻿<section name="SonarQube Quality Gate" fontcolor="blue">
+    <table>
+        <tr>
+            <td fontcolor="#26a69a" fontattribute="bold" value="Status"></td>
+            <td fontcolor="#26a69a" fontattribute="bold" value="Metric"></td>
+            <td fontcolor="#26a69a" fontattribute="bold" value="Result"></td>
+        </tr>
+        @foreach (var condition in Model.ProjectStatus.Conditions)
+        {
+            <tr>
+                <td fontcolor="@(condition.Status == "ERROR" ? "#d4333f" : "#0a0")" value="@condition.Status"></td>
+                <td fontcolor="@(condition.Status == "ERROR" ? "#d4333f" : "#0a0")" value="@condition.MetricName"></td>
+                <td fontcolor="@(condition.Status == "ERROR" ? "#d4333f" : "#0a0")" value="@condition.Result"></td>
+            </tr>
+        }
+    </table>
+</section>
