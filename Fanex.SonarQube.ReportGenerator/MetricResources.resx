@@ -138,14 +138,14 @@
   <data name="new_duplicated_lines_density" xml:space="preserve">
     <value>Duplicated Lines on New Code (%)</value>
   </data>
+  <data name="new_maintainability_rating" xml:space="preserve">
+    <value>Maintainability Rating on New Code</value>
+  </data>
   <data name="new_reliability_rating" xml:space="preserve">
     <value>Reliability Rating on New Code</value>
   </data>
   <data name="new_security_rating" xml:space="preserve">
     <value>Security Rating on New Code</value>
-  </data>
-  <data name="new_sqale_rating" xml:space="preserve">
-    <value>Maintainability Rating on New Code</value>
   </data>
   <data name="reliability_rating" xml:space="preserve">
     <value>Reliability Rating</value>

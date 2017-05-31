@@ -49,13 +49,20 @@ namespace Fanex.SonarQube.ReportGenerator
 
                 if (_argument.IsValid)
                 {
-                    ConfigureRazorEngine();
-
                     QualityGateStatusModel gateStatus = await GetQualityGateStatus();
-                    string content = GenerateTemplateContent(gateStatus, @"Templates\ProjectStatus.cshtml");
+
+                    var reportConfig = new TemplateServiceConfiguration
+                    {
+                        EncodedStringFactory = new HtmlEncodedStringFactory()
+                    };
+                    string content = GenerateTemplateContent(reportConfig, gateStatus, @"Templates\ProjectStatus.cshtml");
                     string reportPath = Path.Combine(_argument.Workspace, AppSetting.QualityStatusFileName);
 
-                    string emailContent = GenerateTemplateContent(gateStatus, @"Templates\ProjectStatusEmail.cshtml");
+                    var emailConfig = new TemplateServiceConfiguration
+                    {
+                        EncodedStringFactory = new RawStringFactory()
+                    };
+                    string emailContent = GenerateTemplateContent(emailConfig, gateStatus, @"Templates\ProjectStatusEmail.cshtml");
                     string emailFilePath = Path.Combine(_argument.Workspace, AppSetting.QualityStatusEmailFileName);
 
                     File.WriteAllText(reportPath, content);
@@ -76,7 +83,7 @@ namespace Fanex.SonarQube.ReportGenerator
             }
         }
 
-        private static string GenerateTemplateContent(object model, string relativeTemplatePath)
+        private static string GenerateTemplateContent(TemplateServiceConfiguration config, object model, string relativeTemplatePath)
         {
             string appPath = AppDomain.CurrentDomain.BaseDirectory;
             string templatePath = Path.Combine(appPath, relativeTemplatePath);
@@ -84,6 +91,8 @@ namespace Fanex.SonarQube.ReportGenerator
 
             if (File.Exists(templatePath))
             {
+                Engine.Razor = RazorEngineService.Create(config);
+
                 string templateContent = File.ReadAllText(templatePath);
 
                 resultContent = Engine.Razor.RunCompile(templateContent, relativeTemplatePath, model.GetType(), model);

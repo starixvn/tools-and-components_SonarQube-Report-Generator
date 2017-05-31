@@ -124,6 +124,15 @@ namespace Fanex.SonarQube.ReportGenerator {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maintainability Rating on New Code.
+        /// </summary>
+        internal static string new_maintainability_rating {
+            get {
+                return ResourceManager.GetString("new_maintainability_rating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reliability Rating on New Code.
         /// </summary>
         internal static string new_reliability_rating {
@@ -138,15 +147,6 @@ namespace Fanex.SonarQube.ReportGenerator {
         internal static string new_security_rating {
             get {
                 return ResourceManager.GetString("new_security_rating", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Maintainability Rating on New Code.
-        /// </summary>
-        internal static string new_sqale_rating {
-            get {
-                return ResourceManager.GetString("new_sqale_rating", resourceCulture);
             }
         }
         
