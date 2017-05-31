@@ -49,13 +49,20 @@ namespace Fanex.SonarQube.ReportGenerator
 
                 if (_argument.IsValid)
                 {
+                    ConfigureRazorEngine();
+
                     QualityGateStatusModel gateStatus = await GetQualityGateStatus();
                     string content = GenerateTemplateContent(gateStatus, @"Templates\ProjectStatus.cshtml");
                     string reportPath = Path.Combine(_argument.Workspace, AppSetting.QualityStatusFileName);
 
-                    File.WriteAllText(reportPath, content);
+                    string emailContent = GenerateTemplateContent(gateStatus, @"Templates\ProjectStatusEmail.cshtml");
+                    string emailFilePath = Path.Combine(_argument.Workspace, AppSetting.QualityStatusEmailFileName);
 
+                    File.WriteAllText(reportPath, content);
                     Console.WriteLine($"The report file \"{reportPath}\" was generated.");
+
+                    File.WriteAllText(emailFilePath, emailContent);
+                    Console.WriteLine($"The email content \"{emailFilePath}\" was generated.");
                 }
                 else
                 {
@@ -77,19 +84,22 @@ namespace Fanex.SonarQube.ReportGenerator
 
             if (File.Exists(templatePath))
             {
-                var config = new TemplateServiceConfiguration
-                {
-                    EncodedStringFactory = new RawStringFactory()
-                };
-
-                Engine.Razor = RazorEngineService.Create(config);
-
                 string templateContent = File.ReadAllText(templatePath);
 
                 resultContent = Engine.Razor.RunCompile(templateContent, relativeTemplatePath, model.GetType(), model);
             }
 
             return resultContent;
+        }
+
+        private static void ConfigureRazorEngine()
+        {
+            var config = new TemplateServiceConfiguration
+            {
+                EncodedStringFactory = new RawStringFactory()
+            };
+
+            Engine.Razor = RazorEngineService.Create(config);
         }
 
         private async static Task<QualityGateStatusModel> GetQualityGateStatus()

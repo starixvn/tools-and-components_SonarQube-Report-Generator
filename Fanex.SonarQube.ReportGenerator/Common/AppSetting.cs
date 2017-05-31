@@ -14,5 +14,7 @@ namespace Fanex.SonarQube.ReportGenerator.Common
         public static string SonarQubeUrl => ConfigurationManager.AppSettings.Get("SonarQubeUrl");
 
         public static string QualityStatusFileName => ConfigurationManager.AppSettings.Get("QualityStatusFileName");
+
+        public static string QualityStatusEmailFileName => ConfigurationManager.AppSettings.Get("QualityStatusEmailFileName");
     }
 }

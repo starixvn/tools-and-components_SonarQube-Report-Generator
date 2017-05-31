@@ -82,6 +82,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="quality-gate-status.json" />
+    <Content Include="Templates\ProjectStatusEmail.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Templates\ProjectStatus.cshtml">
