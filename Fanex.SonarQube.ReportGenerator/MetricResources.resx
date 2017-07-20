@@ -156,4 +156,10 @@
   <data name="sqale_rating" xml:space="preserve">
     <value>Maintainability Rating</value>
   </data>
+  <data name="test_errors" xml:space="preserve">
+    <value>Unit Test Errors</value>
+  </data>
+  <data name="test_failures" xml:space="preserve">
+    <value>Unit Test Failures</value>
+  </data>
 </root>

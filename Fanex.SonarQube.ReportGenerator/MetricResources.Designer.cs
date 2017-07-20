@@ -176,5 +176,23 @@ namespace Fanex.SonarQube.ReportGenerator {
                 return ResourceManager.GetString("sqale_rating", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit Test Errors.
+        /// </summary>
+        internal static string test_errors {
+            get {
+                return ResourceManager.GetString("test_errors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit Test Failures.
+        /// </summary>
+        internal static string test_failures {
+            get {
+                return ResourceManager.GetString("test_failures", resourceCulture);
+            }
+        }
     }
 }
