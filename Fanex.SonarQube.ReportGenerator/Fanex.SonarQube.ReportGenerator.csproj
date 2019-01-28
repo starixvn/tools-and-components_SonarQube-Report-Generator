@@ -78,23 +78,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\AppSetting.cs" />
-    <Compile Include="MetricResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MetricResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Models\ArgumentModel.cs" />
-    <Compile Include="Models\GateCondition.cs" />
-    <Compile Include="Models\ProjectStatus.cs" />
-    <Compile Include="Models\QualityGateStatusModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="projects-search.json" />
-    <None Include="quality-gate-status.json" />
     <Content Include="Templates\ProjectStatusEmail.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -105,10 +95,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MetricResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MetricResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\SonarQube.Api\SonarQube.Api.csproj">
+      <Project>{a60fa0a1-1143-4126-a5d9-b9ad7b4590f3}</Project>
+      <Name>SonarQube.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

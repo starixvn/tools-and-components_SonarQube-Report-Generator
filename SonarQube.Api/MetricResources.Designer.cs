@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Fanex.SonarQube.ReportGenerator {
+namespace SonarQube.Api {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Fanex.SonarQube.ReportGenerator {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Fanex.SonarQube.ReportGenerator.MetricResources", typeof(MetricResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SonarQube.Api.MetricResources", typeof(MetricResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
