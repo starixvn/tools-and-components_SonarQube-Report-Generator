@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SonarQube.Api.Models;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -12,6 +13,8 @@ namespace SonarQube.Api
     public interface SonarQubeApiService
     {
         Task<QualityGateStatusModel> GetQualityGateStatusOfProject(string projectKey);
+
+        Task<List<ProjectModel>> GetAllProjects();
     }
 
     public class SonarQubeApiServiceImpl : SonarQubeApiService
@@ -26,12 +29,41 @@ namespace SonarQube.Api
             InitializeHttpClient(userToken);
         }
 
+        public async Task<List<ProjectModel>> GetAllProjects()
+        {
+            var result = new List<ProjectModel>();
+            int pageIndex = 1;
+            var pagingProjects = await GetPagingProjects(pageIndex);
+            int pageCount = (pagingProjects.Paging.Total + pagingProjects.Paging.PageSize - 1) / pagingProjects.Paging.PageSize;
+
+            result.AddRange(pagingProjects.Components);
+
+            for (int i = 2; i <= pageCount; i++)
+            {
+                pageIndex = i;
+
+                pagingProjects = await GetPagingProjects(pageIndex);
+
+                result.AddRange(pagingProjects.Components);
+            }
+
+            return result;
+        }
+
         public async Task<QualityGateStatusModel> GetQualityGateStatusOfProject(string projectKey)
         {
             var getGateStatusUrl = new Uri($"{sonarQubeUrl}/api/qualitygates/project_status?projectKey={projectKey}");
             QualityGateStatusModel projectStatus = await GetAsync<QualityGateStatusModel>(getGateStatusUrl);
 
             return projectStatus;
+        }
+
+        private async Task<ProjectSearchResult> GetPagingProjects(int pageIndex)
+        {
+            var getGateStatusUrl = new Uri($"{sonarQubeUrl}/api/projects/search?p={pageIndex}");
+            var projects = await GetAsync<ProjectSearchResult>(getGateStatusUrl);
+
+            return projects;
         }
 
         private void InitializeHttpClient(string userToken)

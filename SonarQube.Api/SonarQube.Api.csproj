@@ -69,6 +69,7 @@
       <DependentUpon>MetricResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Models\GateCondition.cs" />
+    <Compile Include="Models\ProjectSearchResult.cs" />
     <Compile Include="Models\ProjectStatus.cs" />
     <Compile Include="Models\QualityGateStatusModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
