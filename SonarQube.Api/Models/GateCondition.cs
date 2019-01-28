@@ -25,7 +25,7 @@ namespace SonarQube.Api.Models
             {
                 string result = ActualValue;
 
-                if (Status.Equals("ERROR", StringComparison.OrdinalIgnoreCase))
+                if (IsFailed)
                 {
                     result = $"{ActualValue} {ConvertedComparator} {ErrorThreshold}";
                 }
@@ -33,6 +33,8 @@ namespace SonarQube.Api.Models
                 return result;
             }
         }
+
+        public bool IsFailed => Status.Equals("ERROR", StringComparison.OrdinalIgnoreCase);
 
         private string ConvertedComparator
         {

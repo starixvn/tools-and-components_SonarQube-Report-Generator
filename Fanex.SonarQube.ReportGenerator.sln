@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanex.SonarQube.ReportGener
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SonarQube.Api", "SonarQube.Api\SonarQube.Api.csproj", "{A60FA0A1-1143-4126-A5D9-B9AD7B4590F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SonarQube.ScheduledReport", "SonarQube.ScheduledReport\SonarQube.ScheduledReport.csproj", "{25C7FF4D-CCAD-4C76-AE68-31F5CCE5F55A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A60FA0A1-1143-4126-A5D9-B9AD7B4590F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A60FA0A1-1143-4126-A5D9-B9AD7B4590F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A60FA0A1-1143-4126-A5D9-B9AD7B4590F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25C7FF4D-CCAD-4C76-AE68-31F5CCE5F55A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25C7FF4D-CCAD-4C76-AE68-31F5CCE5F55A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25C7FF4D-CCAD-4C76-AE68-31F5CCE5F55A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25C7FF4D-CCAD-4C76-AE68-31F5CCE5F55A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
