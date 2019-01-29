@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SonarQube.Api.Models
 {
@@ -9,13 +10,15 @@ namespace SonarQube.Api.Models
         public List<ProjectModel> Components { get; set; }
     }
 
-    public class ProjectModel
+    public sealed class ProjectModel : IEquatable<ProjectModel>
     {
         public string Id { get; set; }
 
         public string Key { get; set; }
 
         public string Name { get; set; }
+
+        public bool Equals(ProjectModel other) => other != null && Key.Equals(other.Key, StringComparison.OrdinalIgnoreCase);
     }
 
     public class ProjectSearchPaging

@@ -36,6 +36,8 @@ namespace SonarQube.Api.Models
 
         public bool IsFailed => Status.Equals("ERROR", StringComparison.OrdinalIgnoreCase);
 
+        public override string ToString() => $"{MetricName}: {Result}";
+
         private string ConvertedComparator
         {
             get

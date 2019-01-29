@@ -1,0 +1,18 @@
+﻿<b>SonarQube Violation Report</b>@{int itemCount = 1;}
+**********************************************
+@foreach (var project in Model.ViolatedProjects)
+{
+<b>@itemCount. </b><a href="http://sonarqube.nexdev.net/dashboard?id=@(project.Key.Key)">@(project.Key.Name):</a>
+    foreach (var condition in project.Value.ProjectStatus.GetFailedConditions())
+    {
+<i> - @condition.ToString()</i>
+    }
+
+    if (itemCount < Model.ViolatedProjects.Count)
+    {
+<i></i>
+    }
+
+    itemCount++;
+}
+**********************************************
