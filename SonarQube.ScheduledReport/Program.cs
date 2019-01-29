@@ -1,9 +1,12 @@
 ﻿using Fanex.Bot.Client;
 using Fanex.Bot.Client.Enums;
+using Fanex.Logging;
+using Fanex.Logging.Sentry.RavenClient;
 using RazorEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
 using RazorEngine.Text;
+using SharpRaven;
 using SonarQube.Api;
 using SonarQube.Api.Models;
 using SonarQube.ScheduledReport.Models;
@@ -21,7 +24,20 @@ namespace SonarQube.ScheduledReport
 
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            LogManager
+                .SetDefaultLogCategory(AppSetting.SentryEnvironment)
+                .Use(new List<ILogEngine>
+                {
+                     new SentryLogging(new SentryEngineOptions {
+                        Dsn = new Dsn(AppSetting.SentryDsn),
+                        Environment = AppSetting.SentryEnvironment
+                     })
+                });
+
             sonarQubeApiService = new SonarQubeApiServiceImpl(AppSetting.SonarQubeUrl, AppSetting.SonarQubeUserToken);
+
             BotClientManager.UseConfig(
                 new Fanex.Bot.Client.Configuration.BotSettings(
                         AppSetting.BotServiceUrl,
@@ -33,6 +49,16 @@ namespace SonarQube.ScheduledReport
                         .Unwrap()
                         .GetAwaiter()
                         .GetResult();
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var exception = e.ExceptionObject as Exception;
+
+            if (exception != null)
+            {
+                LogService.Error(exception.Message, exception);
+            }
         }
 
         private static async Task SendSonarQubeViolationReport()
@@ -58,11 +84,11 @@ namespace SonarQube.ScheduledReport
 
                 foreach (var conversationId in conversationIds)
                 {
-                    string errorMessage = botConnector.Send(messageContent, conversationId, MessageType.XML);
+                    string statusCode = botConnector.Send(messageContent, conversationId, MessageType.XML);
 
-                    if (errorMessage != HttpStatusCode.OK.ToString())
+                    if (statusCode != HttpStatusCode.OK.ToString())
                     {
-                        throw new SkynexBotException($"There is an error while sending message by Skynex (Status code: {errorMessage})");
+                        throw new SkynexBotException($"There is an error while sending message by Skynex (Status code: {statusCode})");
                     }
                 }
             }

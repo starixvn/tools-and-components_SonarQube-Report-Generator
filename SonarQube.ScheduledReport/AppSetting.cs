@@ -21,5 +21,9 @@ namespace SonarQube.ScheduledReport
 
         public static List<string> GetConversationIds()
             => ConfigurationManager.AppSettings.Get("ConversationIds").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
+
+        public static string SentryDsn => ConfigurationManager.AppSettings.Get("SentryDsn");
+
+        public static string SentryEnvironment => ConfigurationManager.AppSettings.Get("SentryEnvironment");
     }
 }
