@@ -25,5 +25,8 @@ namespace SonarQube.ScheduledReport
         public static string SentryDsn => ConfigurationManager.AppSettings.Get("SentryDsn");
 
         public static string SentryEnvironment => ConfigurationManager.AppSettings.Get("SentryEnvironment");
+
+        public static List<string> GetIgnoredProjectNamePatterns()
+            => ConfigurationManager.AppSettings.Get("IgnoredProjectNamePatterns").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
     }
 }

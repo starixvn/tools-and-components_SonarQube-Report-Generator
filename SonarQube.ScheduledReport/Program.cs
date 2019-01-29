@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SonarQube.ScheduledReport
@@ -65,6 +66,7 @@ namespace SonarQube.ScheduledReport
         {
             var violatedProjects = new Dictionary<ProjectModel, QualityGateStatusModel>();
             var projects = await sonarQubeApiService.GetAllProjects();
+            projects = FilterProjects(projects);
 
             foreach (var project in projects)
             {
@@ -86,12 +88,40 @@ namespace SonarQube.ScheduledReport
                 {
                     string statusCode = botConnector.Send(messageContent, conversationId, MessageType.XML);
 
-                    if (statusCode != HttpStatusCode.OK.ToString())
+                    if (statusCode != HttpStatusCode.OK.ToString("D"))
                     {
                         throw new SkynexBotException($"There is an error while sending message by Skynex (Status code: {statusCode})");
                     }
                 }
             }
+        }
+
+        private static List<ProjectModel> FilterProjects(List<ProjectModel> projects)
+        {
+            var filteredProjects = new List<ProjectModel>();
+            var patterns = AppSetting.GetIgnoredProjectNamePatterns();
+
+            foreach (var project in projects)
+            {
+                bool ignored = false;
+                int i = 0;
+
+                while (!ignored && i < patterns.Count)
+                {
+                    var pattern = patterns[i];
+
+                    ignored = Regex.IsMatch(project.Name, pattern);
+
+                    i++;
+                }
+
+                if (!ignored)
+                {
+                    filteredProjects.Add(project);
+                }
+            }
+
+            return filteredProjects;
         }
 
         private static string GenerateTemplateContent(object model, string relativeTemplatePath)
