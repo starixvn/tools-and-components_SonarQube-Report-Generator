@@ -31,8 +31,7 @@ namespace SonarQube.ScheduledReport.Services
     {
         private readonly SonarQubeApiService sonarQubeApiService;
         private static readonly string[] ExclusionSettings = new[] { "sonar.coverage.exclusions", "sonar.cpd.exclusions", "sonar.exclusions", "sonar.issue.ignore.allfile", "sonar.issue.ignore.block" };
-
-
+        
         public ReportServiceImpl(SonarQubeApiService sonarQubeApiService)
         {
             this.sonarQubeApiService = sonarQubeApiService ?? new SonarQubeApiServiceImpl(AppSetting.SonarQubeUrl, AppSetting.SonarQubeUserToken);
