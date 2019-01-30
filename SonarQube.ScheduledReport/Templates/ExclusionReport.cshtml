@@ -1,0 +1,18 @@
+﻿<b>SonarQube Exclusion Report</b>@{int itemCount = 1;}
+********************************************************************************************
+@foreach (var project in Model.Projects)
+{
+<b>@itemCount. </b><a href="http://sonarqube.nexdev.net/project/settings?category=exclusions&amp;id=@(project.Key.Key)">@(project.Key.Name):</a>
+    foreach (var setting in project.Value)
+    {
+<b> - @setting.Name:</b> <i>@string.Join(", ", setting.Values)</i>
+    }
+
+    if (itemCount < Model.Projects.Count)
+    {
+<i></i>
+    }
+
+    itemCount++;
+}
+********************************************************************************************

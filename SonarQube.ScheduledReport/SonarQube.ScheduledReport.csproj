@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSetting.cs" />
+    <Compile Include="Models\ExclusionReportModel.cs" />
     <Compile Include="Models\SkynexBotException.cs" />
     <Compile Include="Models\ViolationReportModel.cs" />
     <Compile Include="Program.cs" />
@@ -117,6 +118,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Templates\ExclusionReport.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Templates\ViolationReport.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

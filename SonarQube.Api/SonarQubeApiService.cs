@@ -15,6 +15,8 @@ namespace SonarQube.Api
         Task<QualityGateStatusModel> GetQualityGateStatusOfProject(string projectKey);
 
         Task<List<ProjectModel>> GetAllProjects();
+
+        Task<ProjectSettingModel> GetProjectSetting(string projectKey);
     }
 
     public class SonarQubeApiServiceImpl : SonarQubeApiService
@@ -58,10 +60,18 @@ namespace SonarQube.Api
             return projectStatus;
         }
 
+        public async Task<ProjectSettingModel> GetProjectSetting(string projectKey)
+        {
+            var getProjectSettingUrl = new Uri($"{sonarQubeUrl}/api/settings/values?component={projectKey}");
+            var setting = await GetAsync<ProjectSettingModel>(getProjectSettingUrl);
+
+            return setting;
+        }
+
         private async Task<ProjectSearchResult> GetPagingProjects(int pageIndex)
         {
-            var getGateStatusUrl = new Uri($"{sonarQubeUrl}/api/projects/search?p={pageIndex}");
-            var projects = await GetAsync<ProjectSearchResult>(getGateStatusUrl);
+            var getPagingProjectUrl = new Uri($"{sonarQubeUrl}/api/projects/search?p={pageIndex}");
+            var projects = await GetAsync<ProjectSearchResult>(getPagingProjectUrl);
 
             return projects;
         }

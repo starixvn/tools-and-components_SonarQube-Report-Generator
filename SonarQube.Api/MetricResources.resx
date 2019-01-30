@@ -153,6 +153,21 @@
   <data name="security_rating" xml:space="preserve">
     <value>Security Rating</value>
   </data>
+  <data name="sonar.coverage.exclusions" xml:space="preserve">
+    <value>Coverage Exclusions</value>
+  </data>
+  <data name="sonar.cpd.exclusions" xml:space="preserve">
+    <value>Duplication Exclusions</value>
+  </data>
+  <data name="sonar.exclusions" xml:space="preserve">
+    <value>Source File Exclusions</value>
+  </data>
+  <data name="sonar.issue.ignore.allfile" xml:space="preserve">
+    <value>Ignore Issues on Files</value>
+  </data>
+  <data name="sonar.issue.ignore.block" xml:space="preserve">
+    <value>Ignore Issues in Blocks</value>
+  </data>
   <data name="sqale_rating" xml:space="preserve">
     <value>Maintainability Rating</value>
   </data>

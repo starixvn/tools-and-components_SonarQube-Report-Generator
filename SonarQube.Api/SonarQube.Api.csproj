@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="Models\GateCondition.cs" />
     <Compile Include="Models\ProjectSearchResult.cs" />
+    <Compile Include="Models\ProjectSettingModel.cs" />
     <Compile Include="Models\ProjectStatus.cs" />
     <Compile Include="Models\QualityGateStatusModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="SampleData\component-setting.json" />
     <None Include="SampleData\projects-search.json" />
     <None Include="SampleData\quality-gate-status.json" />
   </ItemGroup>

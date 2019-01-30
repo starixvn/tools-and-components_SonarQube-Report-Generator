@@ -1,0 +1,472 @@
+﻿{
+    "settings": [
+        {
+            "key": "qualinsight.badges.activation.measure",
+            "value": "true",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.max_global_issues",
+            "value": "10",
+            "inherited": true
+        },
+        {
+            "key": "sonaranalyzer-cs.nuget.packageVersion",
+            "value": "6.7.1.4347",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.query_max_retry",
+            "value": "50",
+            "inherited": true
+        },
+        {
+            "key": "sonar.authenticator.ignoreStartupFailure",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.editions.jsonUrl",
+            "value": "https://update.sonarsource.org/editions.json",
+            "inherited": true
+        },
+        {
+            "key": "sonar.cs.ignoreHeaderComments",
+            "value": "true",
+            "inherited": true
+        },
+        {
+            "key": "sonar.buildbreaker.skip",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.load_rules",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.tsql.ms.report",
+            "value": "staticcodeanalysis.results.xml",
+            "inherited": true
+        },
+        {
+            "key": "email.fromName",
+            "value": "SonarQube",
+            "inherited": true
+        },
+        {
+            "key": "sonar.sonarcloud.enabled",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.tsql.skip",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.dbcleaner.weeksBeforeKeepingOnlyAnalysesWithVersion",
+            "value": "0",
+            "inherited": true,
+            "parentValue": "0"
+        },
+        {
+            "key": "qualinsight.badges.activation.gate",
+            "value": "true",
+            "inherited": true
+        },
+        {
+            "key": "sonar.buildbreaker.queryInterval",
+            "value": "10000",
+            "inherited": true
+        },
+        {
+            "key": "sonar.forceAuthentication",
+            "value": "false",
+            "inherited": true,
+            "parentValue": "false"
+        },
+        {
+            "key": "sonar.gitlab.unique_issue_per_inline",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.only_issue_from_commit_file",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.notifications.delay",
+            "value": "60",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.build_init_state",
+            "value": "pending",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.issue_filter",
+            "value": "INFO",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.max_minor_issues_gate",
+            "value": "-1",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.max_major_issues_gate",
+            "value": "-1",
+            "inherited": true
+        },
+        {
+            "key": "sonaranalyzer-cs.ruleNamespace",
+            "value": "SonarAnalyzer.CSharp",
+            "inherited": true
+        },
+        {
+            "key": "email.smtp_port.secured",
+            "value": "25",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.max_info_issues_gate",
+            "value": "-1",
+            "inherited": true
+        },
+        {
+            "key": "sonar.builtInQualityProfiles.disableNotificationOnUpdate",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.dbcleaner.hoursBeforeKeepingOnlyOneSnapshotByDay",
+            "value": "4",
+            "inherited": true,
+            "parentValue": "4"
+        },
+        {
+            "key": "sonar.telemetry.enable",
+            "value": "true",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.ignore_certificate",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.organizations.createPersonalOrg",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.telemetry.url",
+            "value": "https://telemetry.sonarsource.com/sonarqube",
+            "inherited": true
+        },
+        {
+            "key": "sonar.dbcleaner.cleanDirectory",
+            "value": "true",
+            "inherited": true
+        },
+        {
+            "key": "sonar.onboardingTutorial.showToNewUsers",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.cpd.cross_project",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "email.from",
+            "value": "sonarqube@starixsoft.com",
+            "inherited": true,
+            "parentValue": "sonarqube@starixsoft.com"
+        },
+        {
+            "key": "sonar.tsql.customrules.prefix",
+            "value": ".customRules",
+            "inherited": true
+        },
+        {
+            "key": "sonar.dbcleaner.weeksBeforeKeepingOnlyOneSnapshotByWeek",
+            "value": "1",
+            "inherited": true,
+            "parentValue": "1"
+        },
+        {
+            "key": "sonar.leak.period",
+            "value": "2017-05-25",
+            "inherited": true,
+            "parentValue": "2017-05-25"
+        },
+        {
+            "key": "email.prefix",
+            "value": "[SONARQUBE]",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.comment_no_issue",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonaranalyzer-cs.pluginKey",
+            "value": "csharp",
+            "inherited": true
+        },
+        {
+            "key": "sonar.buildbreaker.queryMaxAttempts",
+            "value": "90",
+            "inherited": true,
+            "parentValue": "90"
+        },
+        {
+            "key": "sonar.gitlab.max_blocker_issues_gate",
+            "value": "0",
+            "inherited": true
+        },
+        {
+            "key": "sonar.buildbreaker.preview.issuesSeverity",
+            "value": "Disabled",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.quality_gate_fail_mode",
+            "value": "ERROR",
+            "inherited": true
+        },
+        {
+            "key": "sonar.dbcleaner.daysBeforeDeletingClosedIssues",
+            "value": "30",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.only_issue_from_commit_line",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.dbcleaner.weeksBeforeKeepingOnlyOneSnapshotByMonth",
+            "value": "4",
+            "inherited": true,
+            "parentValue": "4"
+        },
+        {
+            "key": "sonar.lf.gravatarServerUrl",
+            "value": "https://secure.gravatar.com/avatar/{EMAIL_MD5}.jpg?s={SIZE}&d=identicon",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.api_version",
+            "value": "v4",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.url",
+            "value": "https://gitlab.com",
+            "inherited": true
+        },
+        {
+            "key": "qualinsight.badges.activation.ce_activity",
+            "value": "true",
+            "inherited": true
+        },
+        {
+            "key": "sonar.telemetry.frequencyInSeconds",
+            "value": "21600",
+            "inherited": true
+        },
+        {
+            "key": "sonar.tsql.skip.custom.rules",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.all_issues",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.disable_inline_comments",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonaranalyzer-cs.staticResourceName",
+            "value": "SonarAnalyzer-6.7.1.4347.zip",
+            "inherited": true
+        },
+        {
+            "key": "sonar.notifications.runningDelayBeforeReportingStatus",
+            "value": "600",
+            "inherited": true
+        },
+        {
+            "key": "sonaranalyzer-cs.nuget.packageId",
+            "value": "SonarAnalyzer.CSharp",
+            "inherited": true
+        },
+        {
+            "key": "sonar.authenticator.downcase",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.scm.disabled",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.query_wait",
+            "value": "1000",
+            "inherited": true
+        },
+        {
+            "key": "sonar.updatecenter.activate",
+            "value": "true",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.json_mode",
+            "value": "NONE",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.max_critical_issues_gate",
+            "value": "0",
+            "inherited": true
+        },
+        {
+            "key": "sonaranalyzer-cs.analyzerId",
+            "value": "SonarAnalyzer.CSharp",
+            "inherited": true
+        },
+        {
+            "key": "sonar.organizations.anyoneCanCreate",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.technicalDebt.ratingGrid",
+            "value": "0.05,0.1,0.2,0.5",
+            "inherited": true
+        },
+        {
+            "key": "sonar.tsql.cg.report",
+            "value": "cgresults.xml",
+            "inherited": true
+        },
+        {
+            "key": "sonar.technicalDebt.developmentCost",
+            "value": "30",
+            "inherited": true
+        },
+        {
+            "key": "sonar.lf.enableGravatar",
+            "value": "true",
+            "inherited": true,
+            "parentValue": "true"
+        },
+        {
+            "key": "sonar.preview.excludePlugins",
+            "values": [ "devcockpit", "pdfreport", "governance", "ldap", "authaad", "authgithub", "authbitbucket", "googleanalytics" ],
+            "inherited": true
+        },
+        {
+            "key": "sonaranalyzer-cs.pluginVersion",
+            "value": "6.7.1.4347",
+            "inherited": true
+        },
+        {
+            "key": "sonar.cs.file.suffixes",
+            "values": [ ".cs" ],
+            "inherited": true
+        },
+        {
+            "key": "sonar.dbcleaner.weeksBeforeDeletingAllSnapshots",
+            "value": "4",
+            "inherited": true,
+            "parentValue": "4"
+        },
+        {
+            "key": "sonar.tsql.cg.path",
+            "value": "D:\\Jenkins\\Tools\\SqlCodeGuard\\SqlCodeGuard.Cmd.exe",
+            "inherited": true,
+            "parentValue": "D:\\Jenkins\\Tools\\SqlCodeGuard\\SqlCodeGuard.Cmd.exe"
+        },
+        {
+            "key": "sonar.gitlab.failure_notification_mode",
+            "value": "commit-status",
+            "inherited": true
+        },
+        {
+            "key": "sonar.updatecenter.url",
+            "value": "https://update.sonarsource.org/update-center.properties",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.ping_user",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.gitlab.disable_global_comment",
+            "value": "false",
+            "inherited": true
+        },
+        {
+            "key": "sonar.tsql.file.suffixes",
+            "value": ".sql",
+            "inherited": true
+        },
+        {
+            "key": "sonar.core.id",
+            "value": "AVv20pNFs1vgKTkGgjyH",
+            "inherited": true
+        },
+        {
+            "key": "sonar.links.ci",
+            "value": "http://jenkins.nexdev.net",
+            "inherited": true
+        },
+        {
+            "key": "sonar.core.serverBaseURL",
+            "value": "http://sonarqube.nexdev.net",
+            "inherited": true
+        },
+        {
+            "key": "email.smtp_host.secured",
+            "value": "smtp.nexdev.net",
+            "inherited": true
+        },
+        {
+            "key": "sonar.core.startTime",
+            "value": "2018-11-12T01:00:50+0000",
+            "inherited": true
+        },
+        {
+            "key": "sonar.global.exclusions",
+            "values": [ "**/*GlobalSuppressions.cs", "**/*AssemblyInfo.cs", "**/*.generated.cs", "**/*.native.cs", "**/Global.asax.cs" ],
+            "inherited": true
+        },
+        {
+            "key": "sonar.exclusions",
+            "values": [ "**/*Entity.cs", "**/*Criteria.cs", "**/*Model.cs", "**/*ViewModel.cs", "**/*Result.cs", "**/*Request.cs", "**/*Response.cs", "**/*Command.cs", "**/*Native.cs", "**/*Attribute.cs" ]
+        },
+        {
+            "key": "sonar.coverage.exclusions",
+            "values": [ "**/*Model*/*.cs", "**/*Model.cs", "**/*Entity.cs", "**/*ViewModel.cs", "**/*Request.cs", "**/*Response.cs", "**/*Result.cs", "**/*Criteria.cs", "**/*Command.cs", "**/*Native.cs", "**/*Test*/**" ]
+        },
+        {
+            "key": "sonar.cpd.exclusions",
+            "values": [ "**/*Model*/*.cs", "**/*Model.cs", "**/*Entity.cs", "**/*ViewModel.cs", "**/*Request.cs", "**/*Response.cs", "**/*Result.cs", "**/*Criteria.cs", "**/*Command.cs", "**/*Native.cs", "**/*Test*/**", "**/*LiveNonLive*.cs", "**/*Builder.cs", "**/SiteWinLossController.cs", "**/BasicWinLossController.cs" ]
+        }
+    ]
+}

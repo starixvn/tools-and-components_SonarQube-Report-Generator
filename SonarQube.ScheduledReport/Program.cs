@@ -13,6 +13,7 @@ using SonarQube.ScheduledReport.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace SonarQube.ScheduledReport
     class Program
     {
         private static SonarQubeApiService sonarQubeApiService;
+        private static readonly string[] ExclusionSettings = new[] { "sonar.coverage.exclusions", "sonar.cpd.exclusions", "sonar.exclusions", "sonar.issue.ignore.allfile", "sonar.issue.ignore.block" };
 
         static void Main(string[] args)
         {
@@ -46,58 +48,93 @@ namespace SonarQube.ScheduledReport
                         AppSetting.BotClientPassword,
                         AppSetting.BotClientTimeout));
 
-            Task.Factory.StartNew(SendSonarQubeViolationReport)
+            List<ProjectModel> projects = Task.Factory.StartNew(GetFilteredProjects)
+                                                        .Unwrap()
+                                                        .GetAwaiter()
+                                                        .GetResult();
+
+            //Task.Factory.StartNew(() => SendSonarQubeViolationReport(projects))
+            //            .Unwrap()
+            //            .GetAwaiter()
+            //            .GetResult();
+
+            Task.Factory.StartNew(() => SendSonarQubeExclusionReport(projects))
                         .Unwrap()
                         .GetAwaiter()
                         .GetResult();
         }
 
-        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private static async Task SendSonarQubeExclusionReport(List<ProjectModel> projects)
         {
-            var exception = e.ExceptionObject as Exception;
-
-            if (exception != null)
-            {
-                LogService.Error(exception.Message, exception);
-            }
-        }
-
-        private static async Task SendSonarQubeViolationReport()
-        {
-            var violatedProjects = new Dictionary<ProjectModel, QualityGateStatusModel>();
-            var projects = await sonarQubeApiService.GetAllProjects();
-            projects = FilterProjects(projects);
+            var reportedProjects = new Dictionary<ProjectModel, List<ProjectSettingKeyValue>>();
 
             foreach (var project in projects)
             {
-                var gateStatus = await sonarQubeApiService.GetQualityGateStatusOfProject(project.Key);
+                var setting = await sonarQubeApiService.GetProjectSetting(project.Key);
+                var exclusionSettings = setting.Settings.Where(x => ExclusionSettings.Contains(x.Key, StringComparer.OrdinalIgnoreCase)).ToList();
 
-                if (gateStatus.ProjectStatus.Status.Equals("ERROR", System.StringComparison.OrdinalIgnoreCase))
+                if (exclusionSettings.Count > 0)
                 {
-                    violatedProjects.Add(project, gateStatus);
+                    reportedProjects.Add(project, exclusionSettings);
                 }
             }
 
-            if (violatedProjects.Count > 0)
+            if (reportedProjects.Count > 0)
             {
-                var botConnector = new BotConnector();
-                var conversationIds = AppSetting.GetConversationIds();
-                string messageContent = GenerateTemplateContent(new ViolationReportModel { ViolatedProjects = violatedProjects }, @"Templates\ViolationReport.cshtml");
+                string messageContent = GenerateTemplateContent(new ExclusionReportModel { Projects = reportedProjects }, @"Templates\ExclusionReport.cshtml");
 
-                foreach (var conversationId in conversationIds)
+                SendBotMessage(messageContent);
+            }
+        }
+
+        private static async Task SendSonarQubeViolationReport(List<ProjectModel> projects)
+        {
+            try
+            {
+                var violatedProjects = new Dictionary<ProjectModel, QualityGateStatusModel>();
+
+                foreach (var project in projects)
                 {
-                    string statusCode = botConnector.Send(messageContent, conversationId, MessageType.XML);
+                    var gateStatus = await sonarQubeApiService.GetQualityGateStatusOfProject(project.Key);
 
-                    if (statusCode != HttpStatusCode.OK.ToString("D"))
+                    if (gateStatus.ProjectStatus.Status.Equals("ERROR", System.StringComparison.OrdinalIgnoreCase))
                     {
-                        throw new SkynexBotException($"There is an error while sending message by Skynex (Status code: {statusCode})");
+                        violatedProjects.Add(project, gateStatus);
                     }
+                }
+
+                if (violatedProjects.Count > 0)
+                {
+                    string messageContent = GenerateTemplateContent(new ViolationReportModel { ViolatedProjects = violatedProjects }, @"Templates\ViolationReport.cshtml");
+
+                    SendBotMessage(messageContent);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.Error(ex.Message, ex);
+            }
+        }
+
+        private static void SendBotMessage(string messageContent)
+        {
+            var botConnector = new BotConnector();
+            var conversationIds = AppSetting.GetConversationIds();
+
+            foreach (var conversationId in conversationIds)
+            {
+                string statusCode = botConnector.Send(messageContent, conversationId, MessageType.XML);
+
+                if (statusCode != HttpStatusCode.OK.ToString("D"))
+                {
+                    throw new SkynexBotException($"There is an error while sending message by Skynex (Status code: {statusCode})");
                 }
             }
         }
 
-        private static List<ProjectModel> FilterProjects(List<ProjectModel> projects)
+        private static async Task<List<ProjectModel>> GetFilteredProjects()
         {
+            var projects = await sonarQubeApiService.GetAllProjects();
             var filteredProjects = new List<ProjectModel>();
             var patterns = AppSetting.GetIgnoredProjectNamePatterns();
 
@@ -146,6 +183,16 @@ namespace SonarQube.ScheduledReport
             }
 
             return resultContent;
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var exception = e.ExceptionObject as Exception;
+
+            if (exception != null)
+            {
+                LogService.Error(exception.Message, exception);
+            }
         }
     }
 }

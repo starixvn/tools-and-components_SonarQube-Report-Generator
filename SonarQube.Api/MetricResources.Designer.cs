@@ -169,6 +169,51 @@ namespace SonarQube.Api {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coverage Exclusions.
+        /// </summary>
+        internal static string sonar_coverage_exclusions {
+            get {
+                return ResourceManager.GetString("sonar.coverage.exclusions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplication Exclusions.
+        /// </summary>
+        internal static string sonar_cpd_exclusions {
+            get {
+                return ResourceManager.GetString("sonar.cpd.exclusions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source File Exclusions.
+        /// </summary>
+        internal static string sonar_exclusions {
+            get {
+                return ResourceManager.GetString("sonar.exclusions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignore Issues on Files.
+        /// </summary>
+        internal static string sonar_issue_ignore_allfile {
+            get {
+                return ResourceManager.GetString("sonar.issue.ignore.allfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignore Issues in Blocks.
+        /// </summary>
+        internal static string sonar_issue_ignore_block {
+            get {
+                return ResourceManager.GetString("sonar.issue.ignore.block", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maintainability Rating.
         /// </summary>
         internal static string sqale_rating {
