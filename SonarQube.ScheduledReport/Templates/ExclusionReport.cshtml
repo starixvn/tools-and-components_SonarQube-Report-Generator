@@ -1,6 +1,7 @@
-﻿<b>SonarQube Exclusion Report</b>@{int itemCount = 1;}
+﻿<b>SonarQube Exclusion Report</b> @(Model.Projects.Count>0?"(rain)":"(sun)") @{int itemCount = 1;}
 ********************************************************************************************
-@foreach (var project in Model.Projects)
+@if (Model.Projects.Count > 0) {
+foreach (var project in Model.Projects)
 {
 <b>@itemCount. </b><a href="http://sonarqube.nexdev.net/project/settings?category=exclusions&amp;id=@(project.Key.Key)">@(project.Key.Name):</a>
     foreach (var setting in project.Value)
@@ -14,5 +15,8 @@
     }
 
     itemCount++;
+}
+} else {
+<i>There is no projects having the exclusion configurations.</i>
 }
 ********************************************************************************************

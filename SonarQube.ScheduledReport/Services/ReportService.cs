@@ -31,7 +31,7 @@ namespace SonarQube.ScheduledReport.Services
     {
         private readonly SonarQubeApiService sonarQubeApiService;
         private static readonly string[] ExclusionSettings = new[] { "sonar.coverage.exclusions", "sonar.cpd.exclusions", "sonar.exclusions", "sonar.issue.ignore.allfile", "sonar.issue.ignore.block" };
-        
+
         public ReportServiceImpl(SonarQubeApiService sonarQubeApiService)
         {
             this.sonarQubeApiService = sonarQubeApiService ?? new SonarQubeApiServiceImpl(AppSetting.SonarQubeUrl, AppSetting.SonarQubeUserToken);
@@ -54,12 +54,9 @@ namespace SonarQube.ScheduledReport.Services
                     }
                 }
 
-                if (reportedProjects.Count > 0)
-                {
-                    string messageContent = GenerateTemplateContent(new ExclusionReportModel { Projects = reportedProjects }, @"Templates\ExclusionReport.cshtml");
+                string messageContent = GenerateTemplateContent(new ExclusionReportModel { Projects = reportedProjects }, @"Templates\ExclusionReport.cshtml");
 
-                    SendBotMessage(messageContent);
-                }
+                SendBotMessage(messageContent);
             }
             catch (Exception ex)
             {
@@ -83,12 +80,9 @@ namespace SonarQube.ScheduledReport.Services
                     }
                 }
 
-                if (violatedProjects.Count > 0)
-                {
-                    string messageContent = GenerateTemplateContent(new ViolationReportModel { ViolatedProjects = violatedProjects }, @"Templates\ViolationReport.cshtml");
+                string messageContent = GenerateTemplateContent(new ViolationReportModel { ViolatedProjects = violatedProjects }, @"Templates\ViolationReport.cshtml");
 
-                    SendBotMessage(messageContent);
-                }
+                SendBotMessage(messageContent);
             }
             catch (Exception ex)
             {
