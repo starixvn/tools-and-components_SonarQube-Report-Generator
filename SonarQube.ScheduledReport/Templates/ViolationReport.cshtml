@@ -1,7 +1,7 @@
 ﻿<b>SonarQube Violation Report</b> @(Model.ViolatedProjects.Count > 0 ? "(rain)" : "(sun)")@{int itemCount = 1;}
 **********************************************
 @if (Model.ViolatedProjects.Count > 0) {
-@foreach (var project in Model.ViolatedProjects)
+foreach (var project in Model.ViolatedProjects)
 {
 <b>@itemCount. </b><a href="http://sonarqube.nexdev.net/dashboard?id=@(project.Key.Key)">@(project.Key.Name):</a>
     foreach (var condition in project.Value.ProjectStatus.GetFailedConditions())
