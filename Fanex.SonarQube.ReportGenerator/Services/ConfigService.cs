@@ -9,6 +9,8 @@ namespace Fanex.SonarQube.ReportGenerator.Services
     public interface ConfigService
     {
         void SaveGlobalSuppression(string projectKey, List<SuppressionModel> suppressions);
+
+        void SaveProjectExclusion(string projectKey, List<ProjectExclusionModel> exclusions);
     }
 
     public class ConfigServiceImpl : ConfigService, IDisposable
@@ -33,6 +35,22 @@ namespace Fanex.SonarQube.ReportGenerator.Services
                 RuleName = x.RuleName,
                 Scope = x.Scope,
                 Target = x.Target
+            }));
+
+            entityManager.SaveChanges();
+        }
+
+        public void SaveProjectExclusion(string projectKey, List<ProjectExclusionModel> exclusions)
+        {
+            var oldConfigs = entityManager.ProjectExclusions.Where(x => x.ProjectKey.Equals(projectKey, StringComparison.OrdinalIgnoreCase));
+
+            entityManager.ProjectExclusions.RemoveRange(oldConfigs);
+
+            entityManager.ProjectExclusions.AddRange(exclusions.Select(x => new ProjectExclusion
+            {
+                ProjectName = x.ProjectName,
+                Exclusions = x.Exclusions,
+                ProjectKey = projectKey
             }));
 
             entityManager.SaveChanges();

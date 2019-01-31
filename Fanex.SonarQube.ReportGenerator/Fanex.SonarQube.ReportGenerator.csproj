@@ -111,6 +111,7 @@
       <DependentUpon>SonarQubeReport.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ArgumentModel.cs" />
+    <Compile Include="Models\ProjectExclusionModel.cs" />
     <Compile Include="Models\SuppressionModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

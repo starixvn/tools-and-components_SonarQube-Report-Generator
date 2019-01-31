@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Fanex.SonarQube.ReportGenerator.Services
 {
@@ -27,6 +28,7 @@ namespace Fanex.SonarQube.ReportGenerator.Services
     {
         private readonly SonarQubeApiService sonarQubeApiService;
         private readonly ConfigService configService;
+        private const string sonarQubeExclude = "SonarQubeExclude";
 
         public ReportServiceImpl(SonarQubeApiService sonarQubeApiService, ConfigService configService)
         {
@@ -66,6 +68,7 @@ namespace Fanex.SonarQube.ReportGenerator.Services
         public void CollectSonarQubeExclusionConfig(ArgumentModel argument)
         {
             var suppressionConfigs = new List<SuppressionModel>();
+            var exclusionConfigs = new List<ProjectExclusionModel>();
             const string defaultScope = "module";
             var projectFiles = Directory.EnumerateFiles(argument.Workspace, "*.csproj", SearchOption.AllDirectories)
                                         .Where(x => !x.EndsWith("Tests", StringComparison.OrdinalIgnoreCase))
@@ -74,6 +77,7 @@ namespace Fanex.SonarQube.ReportGenerator.Services
             foreach (var projectFile in projectFiles)
             {
                 string projectFolder = Path.GetDirectoryName(projectFile);
+                string projectName = Path.GetFileName(projectFile);
                 var globalSuppressionFile = Directory.EnumerateFiles(projectFolder, "GlobalSuppressions*.cs", SearchOption.TopDirectoryOnly).FirstOrDefault();
 
                 if (!string.IsNullOrWhiteSpace(globalSuppressionFile))
@@ -83,20 +87,64 @@ namespace Fanex.SonarQube.ReportGenerator.Services
 
                     foreach (Match match in matches)
                     {
-                        var config = new SuppressionModel
+                        suppressionConfigs.Add(new SuppressionModel
                         {
-                            ProjectName = Path.GetFileName(projectFile),
+                            ProjectName = projectName,
                             RuleName = match.Groups[2]?.Value,
                             Scope = match.Groups[5]?.Value ?? defaultScope,
                             Target = SeparateContentBySpace(match.Groups[6]?.Value)
-                        };
-
-                        suppressionConfigs.Add(config);
+                        });
                     }
                 }
+
+                CollectExclusionConfig(exclusionConfigs, projectFile);
             }
 
             configService.SaveGlobalSuppression(argument.ProjectKey, suppressionConfigs);
+
+            configService.SaveProjectExclusion(argument.ProjectKey, exclusionConfigs);
+        }
+
+        private static void CollectExclusionConfig(List<ProjectExclusionModel> exclusionConfigs, string projectFile)
+        {
+            string projectName = Path.GetFileName(projectFile);
+            var document = XDocument.Load(projectFile);
+            var projectExclude = document.Descendants("PropertyGroup").Elements(sonarQubeExclude).FirstOrDefault();
+            bool isExcludedProject = bool.TrueString.Equals(projectExclude?.Value, StringComparison.OrdinalIgnoreCase);
+
+            if (isExcludedProject)
+            {
+                exclusionConfigs.Add(new ProjectExclusionModel
+                {
+                    ProjectName = projectName,
+                    Exclusions = projectName
+                });
+            }
+            else
+            {
+                var compileElements = document.Descendants("Compile");
+                var excludedFiles = new List<string>();
+
+                foreach (var element in compileElements)
+                {
+                    string fileName = element.Attribute("Include")?.Value;
+                    bool isExcludedFile = bool.TrueString.Equals(element.Element(sonarQubeExclude)?.Value, StringComparison.OrdinalIgnoreCase);
+
+                    if (isExcludedFile && !string.IsNullOrWhiteSpace(fileName))
+                    {
+                        excludedFiles.Add(fileName);
+                    }
+                }
+
+                if (excludedFiles.Count > 0)
+                {
+                    exclusionConfigs.Add(new ProjectExclusionModel
+                    {
+                        ProjectName = projectName,
+                        Exclusions = string.Join(", ", excludedFiles)
+                    });
+                }
+            }
         }
 
         private static string SeparateContentBySpace(string content)
