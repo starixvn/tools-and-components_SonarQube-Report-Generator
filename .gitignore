@@ -29,3 +29,5 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 .vs/
 packages/
+/SonarQube.Database/SonarQube.Database.dbmdl
+/SonarQube.Database/SonarQube.Database.jfm
