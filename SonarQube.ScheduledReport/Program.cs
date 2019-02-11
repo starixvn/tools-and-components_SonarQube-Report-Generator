@@ -35,7 +35,7 @@ namespace SonarQube.ScheduledReport
                         AppSetting.BotClientPassword,
                         AppSetting.BotClientTimeout));
 
-            reportService = new ReportServiceImpl(null);
+            reportService = new ReportServiceImpl(null, null);
 
             List<ProjectModel> projects = Task.Factory.StartNew(reportService.GetFilteredProjects)
                                                         .Unwrap()

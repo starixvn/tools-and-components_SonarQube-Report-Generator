@@ -89,33 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\AppSetting.cs" />
-    <Compile Include="DataAccess\GlobalSuppression.cs">
-      <DependentUpon>SonarQubeReport.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\ProjectExclusion.cs">
-      <DependentUpon>SonarQubeReport.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\SonarQubeAnalysisExclusion.cs">
-      <DependentUpon>SonarQubeReport.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\SonarQubeReport.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SonarQubeReport.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\SonarQubeReport.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SonarQubeReport.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\SonarQubeReport.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SonarQubeReport.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\ArgumentModel.cs" />
-    <Compile Include="Models\ProjectExclusionModel.cs" />
-    <Compile Include="Models\SuppressionModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -123,29 +97,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Services\ReportService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="DataAccess\SonarQubeReport.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SonarQubeReport.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="DataAccess\SonarQubeReport.edmx.diagram">
-      <DependentUpon>SonarQubeReport.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
-    <Content Include="DataAccess\SonarQubeReport.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SonarQubeReport.Context.cs</LastGenOutput>
-      <DependentUpon>SonarQubeReport.edmx</DependentUpon>
-    </Content>
-    <Content Include="DataAccess\SonarQubeReport.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SonarQubeReport.edmx</DependentUpon>
-      <LastGenOutput>SonarQubeReport.cs</LastGenOutput>
-    </Content>
     <Content Include="Templates\ProjectStatusEmail.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

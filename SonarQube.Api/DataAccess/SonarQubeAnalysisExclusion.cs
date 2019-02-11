@@ -7,18 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Fanex.SonarQube.ReportGenerator.DataAccess
+namespace SonarQube.Api.DataAccess
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class GlobalSuppression
+    public partial class SonarQubeAnalysisExclusion
     {
         public int Id { get; set; }
         public string ProjectKey { get; set; }
-        public string ProjectName { get; set; }
-        public string RuleName { get; set; }
-        public string Scope { get; set; }
-        public string Target { get; set; }
+        public string Key { get; set; }
+        public string Values { get; set; }
     }
 }

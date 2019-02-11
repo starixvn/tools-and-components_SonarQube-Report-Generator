@@ -1,11 +1,10 @@
-﻿using Fanex.SonarQube.ReportGenerator.DataAccess;
-using Fanex.SonarQube.ReportGenerator.Models;
+﻿using SonarQube.Api.DataAccess;
 using SonarQube.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Fanex.SonarQube.ReportGenerator.Services
+namespace SonarQube.Api.Services
 {
     public interface ConfigService
     {
@@ -14,6 +13,8 @@ namespace Fanex.SonarQube.ReportGenerator.Services
         void SaveProjectExclusion(string projectKey, List<ProjectExclusionModel> exclusions);
 
         void SaveSonarQubeAnalysisExclusion(string projectKey, List<ProjectSettingKeyValue> settings);
+
+        List<ProjectSettingKeyValue> GetSonarQubeAnalysisExclusionSetting(string projectKey);
     }
 
     public class ConfigServiceImpl : ConfigService, IDisposable
@@ -73,6 +74,17 @@ namespace Fanex.SonarQube.ReportGenerator.Services
             }));
 
             entityManager.SaveChanges();
+        }
+
+        public List<ProjectSettingKeyValue> GetSonarQubeAnalysisExclusionSetting(string projectKey)
+        {
+            var settings = entityManager.SonarQubeAnalysisExclusions.Where(x => x.ProjectKey.Equals(projectKey, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            return settings.Select(x => new ProjectSettingKeyValue
+            {
+                Key = x.Key,
+                Values = x.Values.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(y => y.Trim()).ToList()
+            }).ToList();
         }
 
         #region IDisposable Support

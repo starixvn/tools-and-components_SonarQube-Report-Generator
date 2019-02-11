@@ -5,8 +5,8 @@ using RazorEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
 using RazorEngine.Text;
-using SonarQube.Api;
 using SonarQube.Api.Models;
+using SonarQube.Api.Services;
 using SonarQube.ScheduledReport.Models;
 using System;
 using System.Collections.Generic;
@@ -30,10 +30,12 @@ namespace SonarQube.ScheduledReport.Services
     public class ReportServiceImpl : ReportService
     {
         private readonly SonarQubeApiService sonarQubeApiService;
+        private readonly ConfigService configService;
         private static readonly string[] ExclusionSettings = new[] { "sonar.coverage.exclusions", "sonar.cpd.exclusions", "sonar.exclusions", "sonar.issue.ignore.allfile", "sonar.issue.ignore.block" };
 
-        public ReportServiceImpl(SonarQubeApiService sonarQubeApiService)
+        public ReportServiceImpl(SonarQubeApiService sonarQubeApiService, ConfigService configService)
         {
+            this.configService = configService ?? new ConfigServiceImpl();
             this.sonarQubeApiService = sonarQubeApiService ?? new SonarQubeApiServiceImpl(AppSetting.SonarQubeUrl, AppSetting.SonarQubeUserToken);
         }
 
@@ -47,6 +49,8 @@ namespace SonarQube.ScheduledReport.Services
                 {
                     var setting = await sonarQubeApiService.GetProjectSetting(project.Key);
                     var exclusionSettings = setting.Settings.Where(x => ExclusionSettings.Contains(x.Key, StringComparer.OrdinalIgnoreCase)).ToList();
+                    var analysisExclusionSettings = configService.GetSonarQubeAnalysisExclusionSetting(project.Key);
+                    exclusionSettings = exclusionSettings.Union(analysisExclusionSettings).ToList();
 
                     if (exclusionSettings.Count > 0)
                     {

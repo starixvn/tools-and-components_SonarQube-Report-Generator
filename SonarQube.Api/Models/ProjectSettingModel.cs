@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SonarQube.Api.Models
 {
@@ -7,7 +8,7 @@ namespace SonarQube.Api.Models
         public List<ProjectSettingKeyValue> Settings { get; set; }
     }
 
-    public class ProjectSettingKeyValue
+    public sealed class ProjectSettingKeyValue : IEquatable<ProjectSettingKeyValue>
     {
         public string Key { get; set; }
 
@@ -16,5 +17,8 @@ namespace SonarQube.Api.Models
         public string Value { get; set; }
 
         public List<string> Values { get; set; }
+
+        public bool Equals(ProjectSettingKeyValue other)
+            => other != null && Key.Equals(other.Key, StringComparison.OrdinalIgnoreCase);
     }
 }

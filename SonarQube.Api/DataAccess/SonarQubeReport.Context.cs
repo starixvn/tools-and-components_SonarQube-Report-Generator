@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Fanex.SonarQube.ReportGenerator.DataAccess
+namespace SonarQube.Api.DataAccess
 {
     using System;
     using System.Data.Entity;

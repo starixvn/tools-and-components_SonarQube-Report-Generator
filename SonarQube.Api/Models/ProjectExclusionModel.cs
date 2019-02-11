@@ -1,4 +1,4 @@
-﻿namespace Fanex.SonarQube.ReportGenerator.Models
+﻿namespace SonarQube.Api.Models
 {
     public class ProjectExclusionModel
     {

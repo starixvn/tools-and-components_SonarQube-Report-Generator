@@ -30,16 +30,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
       <Private>True</Private>
@@ -63,31 +74,80 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\ConfigService.cs" />
+    <Compile Include="DataAccess\GlobalSuppression.cs">
+      <DependentUpon>SonarQubeReport.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\ProjectExclusion.cs">
+      <DependentUpon>SonarQubeReport.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SonarQubeAnalysisExclusion.cs">
+      <DependentUpon>SonarQubeReport.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SonarQubeReport.Context.cs">
+      <DependentUpon>SonarQubeReport.Context.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DataAccess\SonarQubeReport.cs">
+      <DependentUpon>SonarQubeReport.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DataAccess\SonarQubeReport.Designer.cs">
+      <DependentUpon>SonarQubeReport.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="MetricResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MetricResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Models\GateCondition.cs" />
+    <Compile Include="Models\ProjectExclusionModel.cs" />
     <Compile Include="Models\ProjectSearchResult.cs" />
     <Compile Include="Models\ProjectSettingModel.cs" />
     <Compile Include="Models\ProjectStatus.cs" />
     <Compile Include="Models\QualityGateStatusModel.cs" />
+    <Compile Include="Models\SuppressionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SonarQubeApiService.cs" />
+    <Compile Include="Services\SonarQubeApiService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EntityDeploy Include="DataAccess\SonarQubeReport.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SonarQubeReport.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="App.config" />
+    <None Include="DataAccess\SonarQubeReport.edmx.diagram">
+      <DependentUpon>SonarQubeReport.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="SampleData\component-setting.json" />
     <None Include="SampleData\projects-search.json" />
     <None Include="SampleData\quality-gate-status.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="DataAccess\SonarQubeReport.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SonarQubeReport.edmx</DependentUpon>
+      <LastGenOutput>SonarQubeReport.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DataAccess\SonarQubeReport.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SonarQubeReport.edmx</DependentUpon>
+      <LastGenOutput>SonarQubeReport.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MetricResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MetricResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
