@@ -126,5 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare.scmp" />
+    <None Include="ProDeploy.scmp" />
   </ItemGroup>
 </Project>
