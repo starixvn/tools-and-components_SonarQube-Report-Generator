@@ -21,7 +21,9 @@ namespace Fanex.SonarQube.ReportGenerator.Services
     {
         Task GenerateReport(ArgumentModel argument);
 
-        void CollectSonarQubeExclusionConfig(ArgumentModel argument);
+        void CollectSonarQubeProjectExclusionConfig(ArgumentModel argument);
+
+        void CollectSonarQubeAnalysisExclusionConfig(ArgumentModel argument);
     }
 
     public class ReportServiceImpl : ReportService
@@ -29,7 +31,9 @@ namespace Fanex.SonarQube.ReportGenerator.Services
         private readonly SonarQubeApiService sonarQubeApiService;
         private readonly ConfigService configService;
         private const string SonarQubeExclude = "SonarQubeExclude";
-        private const string Namespace = "http://schemas.microsoft.com/developer/msbuild/2003";
+        private const string ProjectNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
+        private const string SonarQubeConfigNamespace = "http://www.sonarsource.com/msbuild/integration/2015/1";
+        private static readonly string[] ExclusionSettings = new[] { "sonar.coverage.exclusions", "sonar.cpd.exclusions", "sonar.exclusions", "sonar.issue.ignore.allfile", "sonar.issue.ignore.block" };
 
         public ReportServiceImpl(SonarQubeApiService sonarQubeApiService, ConfigService configService)
         {
@@ -66,7 +70,7 @@ namespace Fanex.SonarQube.ReportGenerator.Services
             Console.WriteLine($"The email content \"{emailFilePath}\" was generated.");
         }
 
-        public void CollectSonarQubeExclusionConfig(ArgumentModel argument)
+        public void CollectSonarQubeProjectExclusionConfig(ArgumentModel argument)
         {
             var suppressionConfigs = new List<SuppressionModel>();
             var exclusionConfigs = new List<ProjectExclusionModel>();
@@ -84,6 +88,38 @@ namespace Fanex.SonarQube.ReportGenerator.Services
             configService.SaveGlobalSuppression(argument.ProjectKey, suppressionConfigs);
 
             configService.SaveProjectExclusion(argument.ProjectKey, exclusionConfigs);
+        }
+
+        public void CollectSonarQubeAnalysisExclusionConfig(ArgumentModel argument)
+        {
+            string sonarQubeConfigName = "SonarQube.Analysis.xml";
+            string sonarQubeConfigFile = Directory.EnumerateFiles(argument.Workspace, sonarQubeConfigName, SearchOption.AllDirectories).FirstOrDefault();
+
+            if (!string.IsNullOrWhiteSpace(sonarQubeConfigFile))
+            {
+                var settings = new List<ProjectSettingKeyValue>();
+                var doc = XDocument.Load(sonarQubeConfigFile);
+                var properties = doc.Descendants(XName.Get("Property", SonarQubeConfigNamespace)).ToList();
+
+                foreach (XElement property in properties)
+                {
+                    var key = property.Attribute("Name")?.Value;
+                    var value = property.Value.Trim();
+
+                    if (!string.IsNullOrWhiteSpace(key)
+                        && ExclusionSettings.Contains(key, StringComparer.OrdinalIgnoreCase)
+                        && !string.IsNullOrWhiteSpace(value))
+                    {
+                        settings.Add(new ProjectSettingKeyValue
+                        {
+                            Key = key,
+                            Value = value
+                        });
+                    }
+                }
+
+                configService.SaveSonarQubeAnalysisExclusion(argument.ProjectKey, settings);
+            }
         }
 
         private static void CollectGlobalSuppression(List<SuppressionModel> suppressionConfigs, string projectFile)
@@ -117,8 +153,8 @@ namespace Fanex.SonarQube.ReportGenerator.Services
         {
             string projectName = Path.GetFileName(projectFile);
             var document = XDocument.Load(projectFile);
-            var projectExclude = document.Descendants(XName.Get("PropertyGroup", Namespace))
-                                            .Elements(XName.Get(SonarQubeExclude, Namespace))
+            var projectExclude = document.Descendants(XName.Get("PropertyGroup", ProjectNamespace))
+                                            .Elements(XName.Get(SonarQubeExclude, ProjectNamespace))
                                             .FirstOrDefault();
             bool isExcludedProject = bool.TrueString.Equals(projectExclude?.Value, StringComparison.OrdinalIgnoreCase);
 
@@ -132,13 +168,13 @@ namespace Fanex.SonarQube.ReportGenerator.Services
             }
             else
             {
-                var compileElements = document.Descendants(XName.Get("Compile", Namespace));
+                var compileElements = document.Descendants(XName.Get("Compile", ProjectNamespace));
                 var excludedFiles = new List<string>();
 
                 foreach (var element in compileElements)
                 {
                     string fileName = element.Attribute("Include")?.Value;
-                    bool isExcludedFile = bool.TrueString.Equals(element.Element(XName.Get(SonarQubeExclude, Namespace))?.Value, StringComparison.OrdinalIgnoreCase);
+                    bool isExcludedFile = bool.TrueString.Equals(element.Element(XName.Get(SonarQubeExclude, ProjectNamespace))?.Value, StringComparison.OrdinalIgnoreCase);
 
                     if (isExcludedFile && !string.IsNullOrWhiteSpace(fileName))
                     {

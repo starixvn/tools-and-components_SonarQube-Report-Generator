@@ -25,9 +25,19 @@
           <Property Name="ProjectName" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Exclusions" Type="varchar" MaxLength="2000" Nullable="false" />
         </EntityType>
+        <EntityType Name="SonarQubeAnalysisExclusion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectKey" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Key" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Values" Type="varchar" MaxLength="2000" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="SonarQubeReportModelStoreContainer">
           <EntitySet Name="GlobalSuppression" EntityType="Self.GlobalSuppression" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectExclusion" EntityType="Self.ProjectExclusion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SonarQubeAnalysisExclusion" EntityType="Self.SonarQubeAnalysisExclusion" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -36,6 +46,7 @@
         <EntityContainer Name="SonarQubeReportEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="GlobalSuppressions" EntityType="SonarQubeReportModel.GlobalSuppression" />
           <EntitySet Name="ProjectExclusions" EntityType="SonarQubeReportModel.ProjectExclusion" />
+          <EntitySet Name="SonarQubeAnalysisExclusions" EntityType="SonarQubeReportModel.SonarQubeAnalysisExclusion" />
         </EntityContainer>
         <EntityType Name="GlobalSuppression">
           <Key>
@@ -56,6 +67,15 @@
           <Property Name="ProjectKey" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ProjectName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Exclusions" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SonarQubeAnalysisExclusion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectKey" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Values" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -80,6 +100,16 @@
               <MappingFragment StoreEntitySet="ProjectExclusion">
                 <ScalarProperty Name="Exclusions" ColumnName="Exclusions" />
                 <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="ProjectKey" ColumnName="ProjectKey" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SonarQubeAnalysisExclusions">
+            <EntityTypeMapping TypeName="SonarQubeReportModel.SonarQubeAnalysisExclusion">
+              <MappingFragment StoreEntitySet="SonarQubeAnalysisExclusion">
+                <ScalarProperty Name="Values" ColumnName="Values" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
                 <ScalarProperty Name="ProjectKey" ColumnName="ProjectKey" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

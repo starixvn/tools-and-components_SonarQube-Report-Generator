@@ -32,7 +32,9 @@ namespace Fanex.SonarQube.ReportGenerator
                 {
                     await reportService.GenerateReport(argument);
 
-                    reportService.CollectSonarQubeExclusionConfig(argument);
+                    reportService.CollectSonarQubeProjectExclusionConfig(argument);
+
+                    reportService.CollectSonarQubeAnalysisExclusionConfig(argument);
                 }
                 else
                 {

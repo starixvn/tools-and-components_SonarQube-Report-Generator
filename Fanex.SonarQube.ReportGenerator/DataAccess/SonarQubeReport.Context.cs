@@ -27,5 +27,6 @@ namespace Fanex.SonarQube.ReportGenerator.DataAccess
     
         public virtual DbSet<GlobalSuppression> GlobalSuppressions { get; set; }
         public virtual DbSet<ProjectExclusion> ProjectExclusions { get; set; }
+        public virtual DbSet<SonarQubeAnalysisExclusion> SonarQubeAnalysisExclusions { get; set; }
     }
 }

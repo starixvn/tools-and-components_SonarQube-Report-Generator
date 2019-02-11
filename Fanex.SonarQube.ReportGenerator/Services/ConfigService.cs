@@ -1,5 +1,6 @@
 ﻿using Fanex.SonarQube.ReportGenerator.DataAccess;
 using Fanex.SonarQube.ReportGenerator.Models;
+using SonarQube.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Fanex.SonarQube.ReportGenerator.Services
         void SaveGlobalSuppression(string projectKey, List<SuppressionModel> suppressions);
 
         void SaveProjectExclusion(string projectKey, List<ProjectExclusionModel> exclusions);
+
+        void SaveSonarQubeAnalysisExclusion(string projectKey, List<ProjectSettingKeyValue> settings);
     }
 
     public class ConfigServiceImpl : ConfigService, IDisposable
@@ -51,6 +54,22 @@ namespace Fanex.SonarQube.ReportGenerator.Services
                 ProjectName = x.ProjectName,
                 Exclusions = x.Exclusions,
                 ProjectKey = projectKey
+            }));
+
+            entityManager.SaveChanges();
+        }
+
+        public void SaveSonarQubeAnalysisExclusion(string projectKey, List<ProjectSettingKeyValue> settings)
+        {
+            var oldConfigs = entityManager.SonarQubeAnalysisExclusions.Where(x => x.ProjectKey.Equals(projectKey, StringComparison.OrdinalIgnoreCase));
+
+            entityManager.SonarQubeAnalysisExclusions.RemoveRange(oldConfigs);
+
+            entityManager.SonarQubeAnalysisExclusions.AddRange(settings.Select(x => new SonarQubeAnalysisExclusion
+            {
+                ProjectKey = projectKey,
+                Key = x.Key,
+                Values = x.Value
             }));
 
             entityManager.SaveChanges();

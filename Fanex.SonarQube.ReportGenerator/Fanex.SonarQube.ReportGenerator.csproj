@@ -95,6 +95,9 @@
     <Compile Include="DataAccess\ProjectExclusion.cs">
       <DependentUpon>SonarQubeReport.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\SonarQubeAnalysisExclusion.cs">
+      <DependentUpon>SonarQubeReport.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\SonarQubeReport.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
