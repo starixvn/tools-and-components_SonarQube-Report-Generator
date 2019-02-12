@@ -28,5 +28,7 @@ namespace SonarQube.ScheduledReport
 
         public static List<string> GetIgnoredProjectNamePatterns()
             => ConfigurationManager.AppSettings.Get("IgnoredProjectNamePatterns").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToList();
+
+        public static string Recipients => ConfigurationManager.AppSettings.Get("Recipients");
     }
 }

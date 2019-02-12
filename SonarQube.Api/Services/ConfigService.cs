@@ -15,6 +15,10 @@ namespace SonarQube.Api.Services
         void SaveSonarQubeAnalysisExclusion(string projectKey, List<ProjectSettingKeyValue> settings);
 
         List<ProjectSettingKeyValue> GetSonarQubeAnalysisExclusionSetting(string projectKey);
+
+        List<ProjectExclusionModel> GetProjectExclusions();
+
+        List<SuppressionModel> GetGlobalSuppressions();
     }
 
     public class ConfigServiceImpl : ConfigService, IDisposable
@@ -86,6 +90,24 @@ namespace SonarQube.Api.Services
                 Values = x.Values.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(y => y.Trim()).ToList()
             }).ToList();
         }
+
+        public List<ProjectExclusionModel> GetProjectExclusions()
+            => entityManager.ProjectExclusions.Select(x => new ProjectExclusionModel
+            {
+                Exclusions = x.Exclusions,
+                ProjectKey = x.ProjectKey,
+                ProjectName = x.ProjectName
+            }).ToList();
+
+        public List<SuppressionModel> GetGlobalSuppressions()
+            => entityManager.GlobalSuppressions.Select(x => new SuppressionModel
+            {
+                ProjectKey = x.ProjectKey,
+                ProjectName = x.ProjectName,
+                RuleName = x.RuleName,
+                Scope = x.Scope,
+                Target = x.Target
+            }).ToList();
 
         #region IDisposable Support
         private bool disposedValue = false;

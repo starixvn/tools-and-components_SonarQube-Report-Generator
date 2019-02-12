@@ -47,10 +47,12 @@ namespace SonarQube.ScheduledReport
                         .GetAwaiter()
                         .GetResult();
 
-            Task.Factory.StartNew(() => reportService.SendSonarQubeExclusionReport(projects))
+            Task.Factory.StartNew(() => reportService.SendSonarQubeServerExclusionReport(projects))
                         .Unwrap()
                         .GetAwaiter()
                         .GetResult();
+
+            reportService.SendSonarQubeProjectExclusionReportByEmail(projects);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

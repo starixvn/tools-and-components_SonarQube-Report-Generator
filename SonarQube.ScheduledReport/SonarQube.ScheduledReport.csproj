@@ -57,6 +57,14 @@
       <HintPath>..\packages\Fanex.Logging.Sentry.RavenClient.1.0.0\lib\net461\Fanex.Logging.Sentry.RavenClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Fanex.MailDeliver.MailClient, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.MailDeliver.MailClient.1.0.0.3\lib\net40\Fanex.MailDeliver.MailClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LINQtoCSV, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LINQtoCSV.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -119,6 +127,8 @@
   <ItemGroup>
     <Compile Include="AppSetting.cs" />
     <Compile Include="Models\ExclusionReportModel.cs" />
+    <Compile Include="Models\GlobalSuppressionCsvModel.cs" />
+    <Compile Include="Models\ProjectExclusionCsvModel.cs" />
     <Compile Include="Models\SkynexBotException.cs" />
     <Compile Include="Models\ViolationReportModel.cs" />
     <Compile Include="Program.cs" />
