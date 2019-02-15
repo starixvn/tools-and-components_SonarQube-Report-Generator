@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProjectKey" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="ProjectName" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="RuleName" Type="varchar" MaxLength="500" Nullable="false" />
@@ -44,21 +44,10 @@
     <edmx:ConceptualModels>
       <Schema Namespace="SonarQubeReportModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SonarQubeReportEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="GlobalSuppressions" EntityType="SonarQubeReportModel.GlobalSuppression" />
           <EntitySet Name="ProjectExclusions" EntityType="SonarQubeReportModel.ProjectExclusion" />
           <EntitySet Name="SonarQubeAnalysisExclusions" EntityType="SonarQubeReportModel.SonarQubeAnalysisExclusion" />
+          <EntitySet Name="GlobalSuppressions" EntityType="SonarQubeReportModel.GlobalSuppression" />
         </EntityContainer>
-        <EntityType Name="GlobalSuppression">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProjectKey" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ProjectName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="RuleName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Scope" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Target" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="ProjectExclusion">
           <Key>
             <PropertyRef Name="Id" />
@@ -77,24 +66,23 @@
           <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Values" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="GlobalSuppression">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectKey" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ProjectName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="RuleName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Scope" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Target" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SonarQubeReportModelStoreContainer" CdmEntityContainer="SonarQubeReportEntities">
-          <EntitySetMapping Name="GlobalSuppressions">
-            <EntityTypeMapping TypeName="SonarQubeReportModel.GlobalSuppression">
-              <MappingFragment StoreEntitySet="GlobalSuppression">
-                <ScalarProperty Name="Target" ColumnName="Target" />
-                <ScalarProperty Name="Scope" ColumnName="Scope" />
-                <ScalarProperty Name="RuleName" ColumnName="RuleName" />
-                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
-                <ScalarProperty Name="ProjectKey" ColumnName="ProjectKey" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ProjectExclusions">
             <EntityTypeMapping TypeName="SonarQubeReportModel.ProjectExclusion">
               <MappingFragment StoreEntitySet="ProjectExclusion">
@@ -110,6 +98,18 @@
               <MappingFragment StoreEntitySet="SonarQubeAnalysisExclusion">
                 <ScalarProperty Name="Values" ColumnName="Values" />
                 <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="ProjectKey" ColumnName="ProjectKey" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GlobalSuppressions">
+            <EntityTypeMapping TypeName="SonarQubeReportModel.GlobalSuppression">
+              <MappingFragment StoreEntitySet="GlobalSuppression">
+                <ScalarProperty Name="Target" ColumnName="Target" />
+                <ScalarProperty Name="Scope" ColumnName="Scope" />
+                <ScalarProperty Name="RuleName" ColumnName="RuleName" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
                 <ScalarProperty Name="ProjectKey" ColumnName="ProjectKey" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

@@ -5,9 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="ab43e3dd983c482fa7cf60d6e2261801" Name="Diagram1">
-        <EntityTypeShape EntityType="SonarQubeReportModel.GlobalSuppression" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="SonarQubeReportModel.ProjectExclusion" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="SonarQubeReportModel.SonarQubeAnalysisExclusion" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="SonarQubeReportModel.GlobalSuppression" Width="1.5" PointX="0.5" PointY="0.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

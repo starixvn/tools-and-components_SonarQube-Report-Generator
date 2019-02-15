@@ -25,8 +25,8 @@ namespace SonarQube.Api.DataAccess
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<GlobalSuppression> GlobalSuppressions { get; set; }
         public virtual DbSet<ProjectExclusion> ProjectExclusions { get; set; }
         public virtual DbSet<SonarQubeAnalysisExclusion> SonarQubeAnalysisExclusions { get; set; }
+        public virtual DbSet<GlobalSuppression> GlobalSuppressions { get; set; }
     }
 }

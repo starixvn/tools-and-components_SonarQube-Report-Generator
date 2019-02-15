@@ -14,7 +14,7 @@ namespace SonarQube.Api.DataAccess
     
     public partial class GlobalSuppression
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string ProjectKey { get; set; }
         public string ProjectName { get; set; }
         public string RuleName { get; set; }
