@@ -124,6 +124,7 @@ namespace Fanex.SonarQube.ReportGenerator.Services
 
         private static void CollectGlobalSuppression(List<SuppressionModel> suppressionConfigs, string projectFile)
         {
+            const string sonarQubeRulePattern = @"S\d+";
             const string defaultScope = "module";
             string projectFolder = Path.GetDirectoryName(projectFile);
             string projectName = Path.GetFileName(projectFile);
@@ -136,15 +137,20 @@ namespace Fanex.SonarQube.ReportGenerator.Services
 
                 foreach (Match match in matches)
                 {
-                    string scope = match.Groups[5]?.Value;
+                    string ruleName = match.Groups[2]?.Value;
 
-                    suppressionConfigs.Add(new SuppressionModel
+                    if (!string.IsNullOrWhiteSpace(ruleName) && Regex.IsMatch(ruleName, sonarQubeRulePattern, RegexOptions.IgnoreCase))
                     {
-                        ProjectName = projectName,
-                        RuleName = match.Groups[2]?.Value,
-                        Scope = !string.IsNullOrWhiteSpace(scope) ? scope : defaultScope,
-                        Target = SeparateContentBySpace(match.Groups[6]?.Value)
-                    });
+                        string scope = match.Groups[5]?.Value;
+
+                        suppressionConfigs.Add(new SuppressionModel
+                        {
+                            ProjectName = projectName,
+                            RuleName = match.Groups[2]?.Value,
+                            Scope = !string.IsNullOrWhiteSpace(scope) ? scope : defaultScope,
+                            Target = SeparateContentBySpace(match.Groups[6]?.Value)
+                        });
+                    }
                 }
             }
         }
