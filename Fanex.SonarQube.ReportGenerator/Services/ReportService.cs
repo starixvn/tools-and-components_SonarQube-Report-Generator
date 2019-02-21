@@ -124,7 +124,7 @@ namespace Fanex.SonarQube.ReportGenerator.Services
 
         private static void CollectGlobalSuppression(List<SuppressionModel> suppressionConfigs, string projectFile)
         {
-            const string sonarQubeRulePattern = @"S\d+";
+            const string sonarQubeRulePattern = @"^S\d+";
             const string defaultScope = "module";
             string projectFolder = Path.GetDirectoryName(projectFile);
             string projectName = Path.GetFileName(projectFile);
