@@ -8,7 +8,7 @@ foreach (var project in Model.Projects)
     {
 <b> - @setting.Name:</b> <i>@string.Join(", ", setting.Values)</i>
     }
-
+<a href="http://rocketor.nexdev.net/SonarQubeReport/Index?projectKey=@(project.Key.Key)">More details...</a>
     if (itemCount < Model.Projects.Count)
     {
 <i></i>
