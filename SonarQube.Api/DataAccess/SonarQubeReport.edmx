@@ -16,6 +16,16 @@
           <Property Name="Scope" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Target" Type="varchar" MaxLength="1000" />
         </EntityType>
+        <EntityType Name="ProjectBranch">
+          <Key>
+            <PropertyRef Name="ProjectKey" />
+          </Key>
+          <Property Name="ProjectKey" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Branch" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Commit" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Author" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ScanTime" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="ProjectExclusion">
           <Key>
             <PropertyRef Name="Id" />
@@ -34,8 +44,15 @@
           <Property Name="Key" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Values" Type="varchar" MaxLength="2000" Nullable="false" />
         </EntityType>
+        <Function Name="ProjectBranch_Save" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProjectKey" Type="varchar" Mode="In" />
+          <Parameter Name="Branch" Type="varchar" Mode="In" />
+          <Parameter Name="Commit" Type="varchar" Mode="In" />
+          <Parameter Name="Author" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="SonarQubeReportModelStoreContainer">
           <EntitySet Name="GlobalSuppression" EntityType="Self.GlobalSuppression" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectBranch" EntityType="Self.ProjectBranch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectExclusion" EntityType="Self.ProjectExclusion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SonarQubeAnalysisExclusion" EntityType="Self.SonarQubeAnalysisExclusion" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -47,6 +64,13 @@
           <EntitySet Name="ProjectExclusions" EntityType="SonarQubeReportModel.ProjectExclusion" />
           <EntitySet Name="SonarQubeAnalysisExclusions" EntityType="SonarQubeReportModel.SonarQubeAnalysisExclusion" />
           <EntitySet Name="GlobalSuppressions" EntityType="SonarQubeReportModel.GlobalSuppression" />
+          <EntitySet Name="ProjectBranches" EntityType="SonarQubeReportModel.ProjectBranch" />
+          <FunctionImport Name="SaveProjectBranch">
+            <Parameter Name="ProjectKey" Mode="In" Type="String" />
+            <Parameter Name="Branch" Mode="In" Type="String" />
+            <Parameter Name="Commit" Mode="In" Type="String" />
+            <Parameter Name="Author" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="ProjectExclusion">
           <Key>
@@ -76,6 +100,16 @@
           <Property Name="RuleName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Scope" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Target" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ProjectBranch">
+          <Key>
+            <PropertyRef Name="ProjectKey" />
+          </Key>
+          <Property Name="ProjectKey" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Branch" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Commit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ScanTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -115,6 +149,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ProjectBranches">
+            <EntityTypeMapping TypeName="SonarQubeReportModel.ProjectBranch">
+              <MappingFragment StoreEntitySet="ProjectBranch">
+                <ScalarProperty Name="ScanTime" ColumnName="ScanTime" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Commit" ColumnName="Commit" />
+                <ScalarProperty Name="Branch" ColumnName="Branch" />
+                <ScalarProperty Name="ProjectKey" ColumnName="ProjectKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SaveProjectBranch" FunctionName="SonarQubeReportModel.Store.ProjectBranch_Save" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -12,6 +12,8 @@ namespace SonarQube.Api.DataAccess
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class SonarQubeReportEntities : DbContext
     {
@@ -28,5 +30,27 @@ namespace SonarQube.Api.DataAccess
         public virtual DbSet<ProjectExclusion> ProjectExclusions { get; set; }
         public virtual DbSet<SonarQubeAnalysisExclusion> SonarQubeAnalysisExclusions { get; set; }
         public virtual DbSet<GlobalSuppression> GlobalSuppressions { get; set; }
+        public virtual DbSet<ProjectBranch> ProjectBranches { get; set; }
+    
+        public virtual int SaveProjectBranch(string projectKey, string branch, string commit, string author)
+        {
+            var projectKeyParameter = projectKey != null ?
+                new ObjectParameter("ProjectKey", projectKey) :
+                new ObjectParameter("ProjectKey", typeof(string));
+    
+            var branchParameter = branch != null ?
+                new ObjectParameter("Branch", branch) :
+                new ObjectParameter("Branch", typeof(string));
+    
+            var commitParameter = commit != null ?
+                new ObjectParameter("Commit", commit) :
+                new ObjectParameter("Commit", typeof(string));
+    
+            var authorParameter = author != null ?
+                new ObjectParameter("Author", author) :
+                new ObjectParameter("Author", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SaveProjectBranch", projectKeyParameter, branchParameter, commitParameter, authorParameter);
+        }
     }
 }

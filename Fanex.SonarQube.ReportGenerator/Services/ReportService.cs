@@ -9,9 +9,13 @@ using SonarQube.Api.Models;
 using SonarQube.Api.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -24,6 +28,8 @@ namespace Fanex.SonarQube.ReportGenerator.Services
         void CollectSonarQubeProjectExclusionConfig(ArgumentModel argument);
 
         void CollectSonarQubeAnalysisExclusionConfig(ArgumentModel argument);
+
+        void SaveProjectBranch(ArgumentModel argument);
     }
 
     public class ReportServiceImpl : ReportService
@@ -34,6 +40,7 @@ namespace Fanex.SonarQube.ReportGenerator.Services
         private const string ProjectNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
         private const string SonarQubeConfigNamespace = "http://www.sonarsource.com/msbuild/integration/2015/1";
         private static readonly string[] ExclusionSettings = new[] { "sonar.coverage.exclusions", "sonar.cpd.exclusions", "sonar.exclusions", "sonar.issue.ignore.allfile", "sonar.issue.ignore.block" };
+        private const string NickNamePattern = @"(\b[A-Z]+\b)";
 
         public ReportServiceImpl(SonarQubeApiService sonarQubeApiService, ConfigService configService)
         {
@@ -120,6 +127,36 @@ namespace Fanex.SonarQube.ReportGenerator.Services
 
                 configService.SaveSonarQubeAnalysisExclusion(argument.ProjectKey, settings);
             }
+        }
+
+        public void SaveProjectBranch(ArgumentModel argument)
+        {
+            var branch = new ProjectBranchModel
+            {
+                Author = GetLatestCommitAuthor(argument.Workspace),
+                ProjectKey = argument.ProjectKey,
+                Branch = Environment.GetEnvironmentVariable("GIT_BRANCH")?.Replace("origin/", string.Empty),
+                Commit = Environment.GetEnvironmentVariable("GIT_COMMIT")
+            };
+
+            configService.SaveProjectBranch(branch);
+        }
+
+        private string GetLatestCommitAuthor(string workspace)
+        {
+            string nickName = string.Empty;
+            string command = "git";
+            string arguments = "show -s --pretty=%an";
+
+            var result = RunCommandLine(command, arguments, workspace, timeout: 60000);
+
+            if (!result.HasError)
+            {
+                var match = Regex.Match(result.Output, NickNamePattern, RegexOptions.IgnoreCase);
+                nickName = match.Success ? CultureInfo.CurrentCulture.TextInfo.ToTitleCase(match.Groups[1]?.Value) : string.Empty;
+            }
+
+            return nickName;
         }
 
         private static void CollectGlobalSuppression(List<SuppressionModel> suppressionConfigs, string projectFile)
@@ -229,6 +266,88 @@ namespace Fanex.SonarQube.ReportGenerator.Services
             }
 
             return resultContent;
+        }
+
+        private static CommandResult RunCommandLine(string processFilePath, string arguments, string workingDirectory, int timeout = 300000, bool checkExitCode = true)
+        {
+            var commandResult = new CommandResult();
+            string outputMessage = string.Empty;
+
+            using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
+            using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
+            {
+                using (Process process = new Process())
+                {
+                    process.StartInfo.FileName = processFilePath;
+                    process.StartInfo.Arguments = arguments;
+                    process.StartInfo.WorkingDirectory = workingDirectory;
+                    process.StartInfo.UseShellExecute = false;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.StartInfo.RedirectStandardError = true;
+
+                    var output = new StringBuilder();
+                    var error = new StringBuilder();
+                    int exitCode;
+
+                    process.OutputDataReceived += (sender, e) =>
+                    {
+                        if (e.Data == null)
+                        {
+                            outputWaitHandle.Set();
+                        }
+                        else
+                        {
+                            output.AppendLine(e.Data);
+                        }
+                    };
+
+                    process.ErrorDataReceived += (sender, e) =>
+                    {
+                        if (e.Data == null)
+                        {
+                            errorWaitHandle.Set();
+                        }
+                        else
+                        {
+                            error.AppendLine(e.Data);
+                        }
+                    };
+
+                    process.Start();
+
+                    process.BeginOutputReadLine();
+                    process.BeginErrorReadLine();
+
+                    if (process.WaitForExit(timeout) &&
+                        outputWaitHandle.WaitOne(timeout) &&
+                        errorWaitHandle.WaitOne(timeout))
+                    {
+                        // Process completed.
+                        output.AppendLine(error.ToString());
+                        exitCode = process.HasExited ? process.ExitCode : 0;
+                    }
+                    else
+                    {
+                        // Timed out.
+                        output.AppendLine(error.ToString());
+                        output.AppendLine("Error timeout is reached!");
+                        exitCode = 1;
+                    }
+
+                    if (output.Length > 0)
+                    {
+                        outputMessage = output.ToString().Trim();
+                        commandResult.Output = outputMessage;
+                    }
+
+                    if (checkExitCode && exitCode != 0)
+                    {
+                        commandResult.ErrorMessage = outputMessage;
+                    }
+                }
+            }
+
+            return commandResult;
         }
     }
 }

@@ -19,6 +19,8 @@ namespace SonarQube.Api.Services
         List<ProjectExclusionModel> GetProjectExclusions();
 
         List<SuppressionModel> GetGlobalSuppressions();
+
+        void SaveProjectBranch(ProjectBranchModel branch);
     }
 
     public class ConfigServiceImpl : ConfigService, IDisposable
@@ -108,6 +110,11 @@ namespace SonarQube.Api.Services
                 Scope = x.Scope,
                 Target = x.Target
             }).ToList();
+
+        public void SaveProjectBranch(ProjectBranchModel branch)
+        {
+            entityManager.SaveProjectBranch(branch.ProjectKey, branch.Branch, branch.Commit, branch.Author);
+        }
 
         #region IDisposable Support
         private bool disposedValue = false;

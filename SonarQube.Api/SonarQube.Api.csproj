@@ -74,6 +74,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\ProjectBranch.cs">
+      <DependentUpon>SonarQubeReport.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProjectBranchModel.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="DataAccess\GlobalSuppression.cs">
       <DependentUpon>SonarQubeReport.tt</DependentUpon>
