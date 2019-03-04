@@ -57,8 +57,9 @@ namespace SonarQube.ScheduledReport.Services
             try
             {
                 var reportedProjects = new Dictionary<ProjectModel, List<ProjectSettingKeyValue>>();
+                var limitedProjects = projects.Take(25);
 
-                foreach (var project in projects)
+                foreach (var project in limitedProjects)
                 {
                     var setting = await sonarQubeApiService.GetProjectSetting(project.Key);
                     var exclusionSettings = setting.Settings.Where(x => ExclusionSettings.Contains(x.Key, StringComparer.OrdinalIgnoreCase)).ToList();
